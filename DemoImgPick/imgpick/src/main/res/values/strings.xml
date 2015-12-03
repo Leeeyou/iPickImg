@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">ImgPick</string>
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+
+
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <style name="anim_popup_dir">
+        <item name="android:windowEnterAnimation">@anim/slide_in</item>
+        <item name="android:windowExitAnimation">@anim/slide_out</item>
+    </style>
+
+    <string name="preview_img_desc">(%1$d/%2$d)</string>
+    <string name="preview_img_desc2">预览</string>
+    <string name="selected_img_desc">完成(%1$d/%2$d)</string>
+    <string name="selected_img_desc2">完成</string>
+    <string name="preview2_img_desc">预览(%1$d)</string>
+    <string name="desc_photo">图片</string>
+    <string name="desc_completion">完成</string>
+    <string name="desc_most_photo">你最多只能选择9张照片</string>
+
+</resources>

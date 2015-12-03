@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_select_completion"
+        android:enabled="false"
+        android:title="@string/desc_completion"
+        app:showAsAction="always" />
+
+</menu>

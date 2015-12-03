@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- basic colors -->
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="blue">#0000FF</color>
+    <color name="red">#ff0000</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="transparent">#00000000</color>
+
+    <!-- logo colors -->
+    <color name="logo_blue">#1472b9</color>
+    <color name="logo_green">#14b440</color>
+    <color name="logo_green_light">#4414b440</color>
+
+    <!-- font colors -->
+    <color name="font_black">#333333</color>
+    <color name="font_gray">#999999</color>
+    <color name="font_gray_desc">#666666</color>
+    <color name="font_hint">#cecece</color>
+    <color name="font_gray_a">#aaaaaa</color>
+    <color name="font_red">#f55050</color>
+
+    <!-- gray colors -->
+    <color name="gray_light_bg_main">#e0e0e0</color>
+    <color name="gray_bg_actionbar">#eeeeee</color>
+    <color name="gray_dialog_btn">#f2f2f2</color>
+    <color name="gray_dialog_btn_pressed">#e9e9e9</color>
+    <color name="green_title_bg">#2ab756</color>
+    <color name="gray_line">#dfdfdf</color>
+    <color name="bg_page_gray">#f4f4f4</color>
+    <color name="bg_listview_head_gray">#efefef</color>
+
+    <!-- bg colors -->
+    <color name="bg_main_gray">#F8F8F8</color>
+    <color name="bg_title_bar">#16b6f6</color>
+    <color name="bg_item_bar">#f4f4f4</color>
+
+    <!-- line colors -->
+    <color name="line_color">#dfdfdf</color>
+    <color name="tv_login_disable_color">#70d1ff</color>
+    <color name="lv_item_top_bottom_line_color">#dcdcdc</color>
+    <color name="line_gray_dark_color">#b7b7b7</color>
+
+    <!-- blue colors -->
+    <color name="blue_about">#016e95</color>
+
+    <!-- verify_code_btn -->
+    <color name="get_verify_code_pressed">#99ff9933</color>
+    <color name="get_verify_code_disable">#e0e0e0</color>
+    <color name="get_verify_code">#ff9933</color>
+
+    <color name="pb_loading_bg">#cccccc</color>
+    <color name="btn_enable_false">#dddddd</color>
+    <color name="btn_enable_true">#2ab756</color>
+
+    <color name="payment_status_no">#ff9933</color>
+    <color name="payment_status_yes">#2ab756</color>
+    <color name="navpage">#FFE1E8EB</color>
+
+    <color name="primary">#3C515C</color>
+    <color name="primary_dark">#142E3C</color>
+    <color name="accent">#40C4FF</color>
+</resources>
