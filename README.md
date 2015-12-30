@@ -2,7 +2,7 @@
 包括切换文件夹、动态记录用户选中的图片、预览图片等功能
 
 ## 效果图
-<img src="%E9%AB%98%E4%BB%BF%E5%BE%AE%E4%BF%A1%E9%80%89%E6%8B%A9%E5%9B%BE%E7%89%87.gif"/>
+<img src="https://github.com/LeeeYou/LeeeYou.github.io/blob/master/images/githubpages/%E9%AB%98%E4%BB%BF%E5%BE%AE%E4%BF%A1%E9%80%89%E6%8B%A9%E5%9B%BE%E7%89%87.gif"/>
 
 ## 项目说明
 这个Demo建立在 张鸿洋的博客[Android 超高仿微信图片选择器 图片该这么加载](http://blog.csdn.net/lmj623565791/article/details/39943731)
