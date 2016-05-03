@@ -26,4 +26,4 @@ On the basis of this Demo Zhang Hongyang blog [Android 超高仿微信图片选�
 - 6、Folder and images in reverse chronological order<br><br>
 
 
-[中文版](baidu.com)
+[中文版](https://github.com/LeeeYou/demoimgpick/blob/master/README_CHINESE.md)
