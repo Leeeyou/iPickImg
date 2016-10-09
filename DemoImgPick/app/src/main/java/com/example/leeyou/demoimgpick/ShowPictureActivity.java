@@ -1,6 +1,7 @@
 package com.example.leeyou.demoimgpick;
 
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,7 +13,17 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.dinuscxj.itemdecoration.GridOffsetsItemDecoration;
 import com.example.leeyou.imgpick.utils.DisplayUtil;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+import top.zibin.luban.Luban;
 
 public class ShowPictureActivity extends AppCompatActivity {
 
@@ -24,16 +35,45 @@ public class ShowPictureActivity extends AppCompatActivity {
         ArrayList<String> imgList = getIntent().getStringArrayListExtra("imgList");
 
         GridOffsetsItemDecoration offsetsItemDecoration = new GridOffsetsItemDecoration(GridOffsetsItemDecoration.GRID_OFFSETS_VERTICAL);
-        offsetsItemDecoration.setVerticalItemOffsets(DisplayUtil.dip2px(this, 12));
-        offsetsItemDecoration.setHorizontalItemOffsets(DisplayUtil.dip2px(this, 12));
+        offsetsItemDecoration.setVerticalItemOffsets(DisplayUtil.dip2px(this, 10));
+        offsetsItemDecoration.setHorizontalItemOffsets(DisplayUtil.dip2px(this, 10));
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.addItemDecoration(offsetsItemDecoration);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setAdapter(new BaseQuickAdapter<String>(R.layout.item_picture, imgList) {
             @Override
-            protected void convert(BaseViewHolder baseViewHolder, String imgPath) {
-                ((ImageView) baseViewHolder.getView(R.id.img)).setImageURI(Uri.parse(imgPath));
+            protected void convert(final BaseViewHolder baseViewHolder, final String imgPath) {
+                Luban.get(ShowPictureActivity.this)
+                        .load(new File(imgPath))
+                        .putGear(Luban.THIRD_GEAR)
+                        .asObservable()
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnError(new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                throwable.printStackTrace();
+                            }
+                        })
+                        .onErrorResumeNext(new Func1<Throwable, Observable<? extends File>>() {
+                            @Override
+                            public Observable<? extends File> call(Throwable throwable) {
+                                return Observable.empty();
+                            }
+                        })
+                        .subscribe(new Action1<File>() {
+                            @Override
+                            public void call(File file) {
+                                try {
+                                    FileInputStream fileInputStream = new FileInputStream(file);
+                                    Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
+                                    ((ImageView) baseViewHolder.getView(R.id.img)).setImageBitmap(bitmap);
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
             }
         });
     }

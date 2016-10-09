@@ -25,4 +25,8 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.4.0'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.1.8'
     compile 'com.dinuscxj:recycleritemdecoration:1.0.0'
+    compile 'top.zibin:Luban:1.0.8'
+
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.1.6'
 }
