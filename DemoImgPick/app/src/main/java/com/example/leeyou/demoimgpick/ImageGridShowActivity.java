@@ -57,6 +57,9 @@ import de.greenrobot.event.EventBus;
 
 import static com.example.leeyou.imgpick.PickImageParams.MAX_PICK_NUM;
 
+/**
+ * 图片选择界面
+ */
 public class ImageGridShowActivity extends AppCompatActivity implements ListImageDirPopupWindow.OnImageDirSelected {
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;

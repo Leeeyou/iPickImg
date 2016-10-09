@@ -7,12 +7,14 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.leeyou.imgpick.PickImageParams;
@@ -24,12 +26,19 @@ import uk.co.senab.photoview.PhotoView;
 
 import static com.example.leeyou.imgpick.PickImageParams.MAX_PICK_NUM;
 
+/**
+ * 图片预览界面,有多个入口进入这个界面
+ * 1、图片选择界面,点击图片进入 isFromPreviewButton ==  false
+ * 2、图片选择界面,点击预览按钮 isFromPreviewButton == true
+ * 3、图片展示界面,点击图片进入 isFromShowActivity == true
+ */
 public class ImagePreviewActivity extends AppCompatActivity {
 
     private static final String ISLOCKED_ARG = "isLocked";
 
     private ViewPager mViewPager;
     private CheckBox cb_select;
+    private RelativeLayout bottom_bar;
 
     private ActionBar actionBar;
     private MenuItem completeMenuItem;
@@ -41,6 +50,7 @@ public class ImagePreviewActivity extends AppCompatActivity {
     private static boolean isFromPreviewButton = false;//是否预览按钮跳转过来
 
     private static Context context;
+    private boolean isFromShowActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,8 +59,10 @@ public class ImagePreviewActivity extends AppCompatActivity {
 
         mViewPager = (HackyViewPager) findViewById(R.id.view_pager);
         cb_select = (CheckBox) findViewById(R.id.cb_select);
+        bottom_bar = (RelativeLayout) findViewById(R.id.bottom_bar);
 
         initData();
+
         initActionBar();
         initViewpager();
         initSelectCheckBox();
@@ -62,6 +74,13 @@ public class ImagePreviewActivity extends AppCompatActivity {
     }
 
     private void initSelectCheckBox() {
+        if (isFromShowActivity) {
+            bottom_bar.setVisibility(View.GONE);
+            return;
+        }
+
+        bottom_bar.setVisibility(View.VISIBLE);
+
         if (!PickImageParams.selectedImageAbsolutePaths.isEmpty()) {
             cb_select.setChecked(PickImageParams.selectedImageAbsolutePaths.contains(getImagePath(initImagePosition)));
         }
@@ -96,12 +115,17 @@ public class ImagePreviewActivity extends AppCompatActivity {
     }
 
     private void initMenuDesc() {
-        if (PickImageParams.selectedImageCount <= 0) {
-            completeMenuItem.setEnabled(false);
+        if (isFromShowActivity) {
+            completeMenuItem.setEnabled(true);
             completeMenuItem.setTitleCondensed(getResources().getString(R.string.selected_img_desc2));
         } else {
-            completeMenuItem.setEnabled(true);
-            completeMenuItem.setTitleCondensed(getResources().getString(R.string.selected_img_desc, PickImageParams.selectedImageCount, MAX_PICK_NUM));
+            if (PickImageParams.selectedImageCount <= 0) {
+                completeMenuItem.setEnabled(false);
+                completeMenuItem.setTitleCondensed(getResources().getString(R.string.selected_img_desc2));
+            } else {
+                completeMenuItem.setEnabled(true);
+                completeMenuItem.setTitleCondensed(getResources().getString(R.string.selected_img_desc, PickImageParams.selectedImageCount, MAX_PICK_NUM));
+            }
         }
     }
 
@@ -160,6 +184,9 @@ public class ImagePreviewActivity extends AppCompatActivity {
         initImagePosition = getIntent().getIntExtra("initImagePosition", 0);
         isFromPreviewButton = getIntent().getBooleanExtra("isFromPreviewButton", false);
 
+        String fromWhere = getIntent().getStringExtra("fromWhere");
+        isFromShowActivity = !TextUtils.isEmpty(fromWhere) && fromWhere.equals(ShowPictureActivity.class.getSimpleName());
+
         context = this;
     }
 
@@ -213,8 +240,11 @@ public class ImagePreviewActivity extends AppCompatActivity {
                 goBack();
                 break;
             case R.id.action_select_completion:
-                // TODO: 2015/12/3 结束当前activity，并跳转到指定界面，采用clear_top_flag
-                Toast.makeText(ImagePreviewActivity.this, "选择了 " + PickImageParams.selectedImageAbsolutePaths.size() + " 张图片", Toast.LENGTH_SHORT).show();
+                if (isFromShowActivity) {
+                    finish();
+                } else {
+                    Toast.makeText(ImagePreviewActivity.this, "选择了 " + PickImageParams.selectedImageAbsolutePaths.size() + " 张图片", Toast.LENGTH_SHORT).show();
+                }
                 break;
             default:
                 break;

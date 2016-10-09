@@ -1,10 +1,12 @@
 package com.example.leeyou.demoimgpick;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -23,6 +25,9 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import top.zibin.luban.Luban;
 
+/**
+ * 图片展示界面
+ */
 public class ShowPictureActivity extends AppCompatActivity {
 
     @Override
@@ -42,6 +47,19 @@ public class ShowPictureActivity extends AppCompatActivity {
         recyclerView.setAdapter(new BaseQuickAdapter<String>(R.layout.item_picture, imgList) {
             @Override
             protected void convert(final BaseViewHolder baseViewHolder, final String imgPath) {
+                ImageView imageView = baseViewHolder.getView(R.id.img);
+
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent()
+                                .putExtra("initImagePosition", baseViewHolder.getLayoutPosition())
+                                .putExtra("isFromPreviewButton", true)
+                                .putExtra("fromWhere", ShowPictureActivity.class.getSimpleName())
+                                .setClass(ShowPictureActivity.this, ImagePreviewActivity.class));
+                    }
+                });
+
                 Luban.get(ShowPictureActivity.this)
                         .load(new File(imgPath))
                         .putGear(Luban.THIRD_GEAR)
@@ -63,6 +81,7 @@ public class ShowPictureActivity extends AppCompatActivity {
                         .subscribe(new Action1<File>() {
                             @Override
                             public void call(File file) {
+
                                 Glide.with(ShowPictureActivity.this)
                                         .load(file)
                                         .into((ImageView) baseViewHolder.getView(R.id.img));
