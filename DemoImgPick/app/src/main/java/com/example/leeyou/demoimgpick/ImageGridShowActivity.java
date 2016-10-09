@@ -1,17 +1,26 @@
 package com.example.leeyou.demoimgpick;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -47,6 +56,8 @@ import de.greenrobot.event.EventBus;
 
 public class ImageGridShowActivity extends AppCompatActivity implements ListImageDirPopupWindow.OnImageDirSelected {
 
+    final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
+
     ProgressDialog mProgressDialog;
 
     int mPicsSize;//存储文件夹中的图片数量
@@ -75,7 +86,9 @@ public class ImageGridShowActivity extends AppCompatActivity implements ListImag
 
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
-            mProgressDialog.dismiss();
+            if (mProgressDialog != null) {
+                mProgressDialog.dismiss();
+            }
 
             data2View();// 为View绑定数据
 
@@ -88,7 +101,7 @@ public class ImageGridShowActivity extends AppCompatActivity implements ListImag
      */
     private void data2View() {
         if (PickImageParams.selectedImageFile == null) {
-            Toast.makeText(getApplicationContext(), "擦，一张图片没扫描到", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "擦，一张图片都没扫描到", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -162,7 +175,48 @@ public class ImageGridShowActivity extends AppCompatActivity implements ListImag
         getScreenHeight();
         initActionbar();
         initView();
-        getImages();
+
+        int targetSdkVersion = 0;
+        try {
+            final PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
+            targetSdkVersion = info.applicationInfo.targetSdkVersion;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+
+            int hasReadExternalStorage;
+
+            if (targetSdkVersion >= Build.VERSION_CODES.M) {
+                hasReadExternalStorage = checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE);
+            } else {
+                hasReadExternalStorage = PermissionChecker.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+
+            if (hasReadExternalStorage != PackageManager.PERMISSION_GRANTED) {
+                if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    showMessageOKCancel("请允许" + getString(R.string.app_name) + "访问您设备上的照片、媒体内容和文件",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                                REQUEST_CODE_ASK_PERMISSIONS);
+                                    }
+                                }
+                            });
+                    return;
+                }
+
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS);
+            } else {
+                getImages();
+            }
+        } else {
+            getImages();
+        }
+
     }
 
     private void getScreenHeight() {
@@ -222,6 +276,15 @@ public class ImageGridShowActivity extends AppCompatActivity implements ListImag
         }).start();
     }
 
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(ImageGridShowActivity.this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
     private void getImageFromMediaStore() {
         String firstImage = null;
 
@@ -254,7 +317,7 @@ public class ImageGridShowActivity extends AppCompatActivity implements ListImag
             ImageFloder imageFloder;
 
             // 利用一个HashSet防止多次扫描同一个文件夹（不加这个判断，图片多起来还是相当恐怖的~~）
-            if (mDirPaths.contains(dirPath)) {
+            if (!TextUtils.isEmpty(dirPath) && mDirPaths.contains(dirPath)) {
                 continue;
             } else {
                 mDirPaths.add(dirPath);
@@ -286,7 +349,9 @@ public class ImageGridShowActivity extends AppCompatActivity implements ListImag
             }
         }
 
-        MyUtils.close(mCursor);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            MyUtils.close(mCursor);
+        }
 
         mDirPaths = null; // 扫描完成，释放辅助的HashSet内存
 
@@ -435,5 +500,26 @@ public class ImageGridShowActivity extends AppCompatActivity implements ListImag
         mImagePreview.setEnabled(true);
         mImagePreview.setTextColor(getResources().getColor(R.color.white));
         mImagePreview.setText(getResources().getString(R.string.preview2_img_desc, PickImageParams.selectedImageCount));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            getImageFromMediaStore();
+                        }
+                    }).start();
+                } else {
+                    Toast.makeText(ImageGridShowActivity.this, "READ_EXTERNAL_STORAGE Denied", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        }
     }
 }
