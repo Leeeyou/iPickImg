@@ -317,6 +317,11 @@ public class ImageGridShowActivity extends AppCompatActivity implements ListImag
             ImageFloder imageFloder;
 
             // 利用一个HashSet防止多次扫描同一个文件夹（不加这个判断，图片多起来还是相当恐怖的~~）
+
+            if (mDirPaths == null) {
+                mDirPaths = new HashSet<>();
+            }
+
             if (!TextUtils.isEmpty(dirPath) && mDirPaths.contains(dirPath)) {
                 continue;
             } else {
