@@ -1,4 +1,4 @@
-package com.example.leeyou.demoimgpick;
+package com.example.leeyou.demoimgpick.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -7,6 +7,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.leeyou.demoimgpick.R;
 import com.example.leeyou.imgpick.PickImageParams;
 import com.example.leeyou.imgpick.listener.PreviewImageListener;
 import com.example.leeyou.imgpick.listener.SelectImageChangeListener;

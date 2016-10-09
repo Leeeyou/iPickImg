@@ -22,6 +22,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +36,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.leeyou.demoimgpick.adapter.GridPhotoAdapter;
 import com.example.leeyou.imgpick.PickImageParams;
 import com.example.leeyou.imgpick.bean.ImageFloder;
 import com.example.leeyou.imgpick.event.NotifyImageSelectedEvent;
@@ -52,7 +54,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-
 
 public class ImageGridShowActivity extends AppCompatActivity implements ListImageDirPopupWindow.OnImageDirSelected {
 
@@ -249,6 +250,16 @@ public class ImageGridShowActivity extends AppCompatActivity implements ListImag
         switch (item.getItemId()) {
             case R.id.action_select_completion:
                 finish();
+
+                for (String imgPath : PickImageParams.selectedImageAbsolutePaths) {
+                    Log.e("ImageGridShow", imgPath);
+                }
+
+                Intent intent = new Intent();
+                intent.setClass(ImageGridShowActivity.this, ShowPictureActivity.class);
+                intent.putStringArrayListExtra("imgList", PickImageParams.selectedImageAbsolutePaths);
+                startActivity(intent);
+
                 Toast.makeText(ImageGridShowActivity.this, "选择了 " + PickImageParams.selectedImageAbsolutePaths.size() + " 张图片", Toast.LENGTH_SHORT).show();
                 break;
             case android.R.id.home:
@@ -317,7 +328,6 @@ public class ImageGridShowActivity extends AppCompatActivity implements ListImag
             ImageFloder imageFloder;
 
             // 利用一个HashSet防止多次扫描同一个文件夹（不加这个判断，图片多起来还是相当恐怖的~~）
-
             if (mDirPaths == null) {
                 mDirPaths = new HashSet<>();
             }

@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ImagePreviewActivity" />
+        <activity android:name=".ShowPictureActivity"/>
     </application>
 
 </manifest>

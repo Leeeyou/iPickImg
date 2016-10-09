@@ -1,0 +1,41 @@
+package com.example.leeyou.demoimgpick;
+
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
+import com.dinuscxj.itemdecoration.GridOffsetsItemDecoration;
+import com.example.leeyou.imgpick.utils.DisplayUtil;
+
+import java.util.ArrayList;
+
+public class ShowPictureActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_show_picture);
+
+        ArrayList<String> imgList = getIntent().getStringArrayListExtra("imgList");
+
+        GridOffsetsItemDecoration offsetsItemDecoration = new GridOffsetsItemDecoration(GridOffsetsItemDecoration.GRID_OFFSETS_VERTICAL);
+        offsetsItemDecoration.setVerticalItemOffsets(DisplayUtil.dip2px(this, 12));
+        offsetsItemDecoration.setHorizontalItemOffsets(DisplayUtil.dip2px(this, 12));
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.addItemDecoration(offsetsItemDecoration);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        recyclerView.setAdapter(new BaseQuickAdapter<String>(R.layout.item_picture, imgList) {
+            @Override
+            protected void convert(BaseViewHolder baseViewHolder, String imgPath) {
+                ((ImageView) baseViewHolder.getView(R.id.img)).setImageURI(Uri.parse(imgPath));
+            }
+        });
+    }
+
+}
