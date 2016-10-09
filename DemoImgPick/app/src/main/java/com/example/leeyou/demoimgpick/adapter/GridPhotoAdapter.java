@@ -16,6 +16,8 @@ import com.example.leeyou.imgpick.utils.ViewHolder;
 
 import java.util.List;
 
+import static com.example.leeyou.imgpick.PickImageParams.MAX_PICK_NUM;
+
 
 public class GridPhotoAdapter extends CommonAdapter<String> {
 
@@ -91,13 +93,13 @@ public class GridPhotoAdapter extends CommonAdapter<String> {
             }
 
             private void choosedImage() {
-                if (PickImageParams.selectedImageCount >= 9) {
-                    Toast.makeText(context, "你最多只能选择9张照片", Toast.LENGTH_SHORT).show();
+                if (PickImageParams.selectedImageCount >= MAX_PICK_NUM) {
+                    Toast.makeText(context, context.getResources().getString(R.string.desc_most_photo, MAX_PICK_NUM), Toast.LENGTH_SHORT).show();
                 } else {
                     PickImageParams.selectedImageAbsolutePaths.add(mDirPath + "/" + item);
                     PickImageParams.selectedImageCount++;
-                    if (PickImageParams.selectedImageCount >= 9)
-                        PickImageParams.selectedImageCount = 9;
+                    if (PickImageParams.selectedImageCount >= MAX_PICK_NUM)
+                        PickImageParams.selectedImageCount = MAX_PICK_NUM;
 
                     choosedImageUIShow(mSelect, mImageView);
                 }

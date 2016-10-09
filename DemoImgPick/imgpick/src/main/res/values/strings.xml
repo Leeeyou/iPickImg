@@ -31,6 +31,6 @@
     <string name="preview2_img_desc">预览(%1$d)</string>
     <string name="desc_photo">图片</string>
     <string name="desc_completion">完成</string>
-    <string name="desc_most_photo">你最多只能选择9张照片</string>
+    <string name="desc_most_photo">你最多只能选择%1$d张照片</string>
 
 </resources>

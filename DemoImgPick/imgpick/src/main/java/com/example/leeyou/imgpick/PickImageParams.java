@@ -19,5 +19,6 @@ public class PickImageParams {
     public static final int FROM_PREVIEW_BUTTON = 10;
     public static final int FROM_ADAPTER_PREVIEW = 11;
 
+    public final static int MAX_PICK_NUM = 20;
 
 }

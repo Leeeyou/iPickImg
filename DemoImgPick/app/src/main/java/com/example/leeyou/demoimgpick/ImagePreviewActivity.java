@@ -22,6 +22,8 @@ import com.example.leeyou.imgpick.ui.component.HackyViewPager;
 import de.greenrobot.event.EventBus;
 import uk.co.senab.photoview.PhotoView;
 
+import static com.example.leeyou.imgpick.PickImageParams.MAX_PICK_NUM;
+
 public class ImagePreviewActivity extends AppCompatActivity {
 
     private static final String ISLOCKED_ARG = "isLocked";
@@ -68,16 +70,16 @@ public class ImagePreviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (cb_select.isChecked()) {
-                    if (PickImageParams.selectedImageCount >= 9) {
-                        Toast.makeText(ImagePreviewActivity.this, R.string.desc_most_photo, Toast.LENGTH_SHORT).show();
+                    if (PickImageParams.selectedImageCount >= MAX_PICK_NUM) {
+                        Toast.makeText(ImagePreviewActivity.this, getResources().getString(R.string.desc_most_photo, MAX_PICK_NUM), Toast.LENGTH_SHORT).show();
                         cb_select.setChecked(false);
 
                         return;
                     }
 
                     PickImageParams.selectedImageCount++;
-                    if (PickImageParams.selectedImageCount >= 9)
-                        PickImageParams.selectedImageCount = 9;
+                    if (PickImageParams.selectedImageCount >= MAX_PICK_NUM)
+                        PickImageParams.selectedImageCount = MAX_PICK_NUM;
 
                     PickImageParams.selectedImageAbsolutePaths.add(getImagePath(mViewPager.getCurrentItem()));
                 } else {
@@ -99,7 +101,7 @@ public class ImagePreviewActivity extends AppCompatActivity {
             completeMenuItem.setTitleCondensed(getResources().getString(R.string.selected_img_desc2));
         } else {
             completeMenuItem.setEnabled(true);
-            completeMenuItem.setTitleCondensed(getResources().getString(R.string.selected_img_desc, PickImageParams.selectedImageCount, 9));
+            completeMenuItem.setTitleCondensed(getResources().getString(R.string.selected_img_desc, PickImageParams.selectedImageCount, MAX_PICK_NUM));
         }
     }
 

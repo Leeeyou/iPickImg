@@ -55,6 +55,8 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
+import static com.example.leeyou.imgpick.PickImageParams.MAX_PICK_NUM;
+
 public class ImageGridShowActivity extends AppCompatActivity implements ListImageDirPopupWindow.OnImageDirSelected {
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
@@ -96,6 +98,7 @@ public class ImageGridShowActivity extends AppCompatActivity implements ListImag
             initListDirPopupWindw(); // 初始化展示文件夹的popupWindw
         }
     };
+
 
     /**
      * 为View绑定数据
@@ -507,10 +510,10 @@ public class ImageGridShowActivity extends AppCompatActivity implements ListImag
         }
 
         completeMenuItem.setEnabled(true);
-        if (PickImageParams.selectedImageCount >= 9) {
-            PickImageParams.selectedImageCount = 9;
+        if (PickImageParams.selectedImageCount >= MAX_PICK_NUM) {
+            PickImageParams.selectedImageCount = MAX_PICK_NUM;
         }
-        completeMenuItem.setTitleCondensed(getResources().getString(R.string.selected_img_desc, PickImageParams.selectedImageCount, 9));
+        completeMenuItem.setTitleCondensed(getResources().getString(R.string.selected_img_desc, PickImageParams.selectedImageCount, MAX_PICK_NUM));
 
         mImagePreview.setEnabled(true);
         mImagePreview.setTextColor(getResources().getColor(R.color.white));
