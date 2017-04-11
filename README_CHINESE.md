@@ -1,4 +1,4 @@
-#High copy WeChat image selector
+# High copy WeChat image selector
 包括切换文件夹、动态记录用户选中的图片、预览图片等功能
 
 ## 效果图
