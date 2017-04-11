@@ -1,4 +1,4 @@
-#High copy WeChat image selector
+# High copy WeChat image selector
 Including the switch folders,dynamic record user selected pictures and preview images, etc
 
 ## Rendering
