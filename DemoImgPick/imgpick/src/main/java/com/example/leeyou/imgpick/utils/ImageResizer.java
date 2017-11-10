@@ -35,6 +35,8 @@ public class ImageResizer {
 
         options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
 
+        // TODO: 2017/11/10  java.lang.OutOfMemoryError: Failed to allocate a 13746252 byte allocation with 7244192 free bytes and 6MB until OOM
+        
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFileDescriptor(fd, null, options);
     }

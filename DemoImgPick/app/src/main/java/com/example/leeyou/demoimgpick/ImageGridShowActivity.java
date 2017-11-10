@@ -348,14 +348,17 @@ public class ImageGridShowActivity extends AppCompatActivity implements ListImag
                 imageFloder.setFirstImagePath(path);
             }
 
-            int picSize = parentFile.list(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String filename) {
-                    return filename.toLowerCase().endsWith(".jpg")
-                            || filename.toLowerCase().endsWith(".png")
-                            || filename.toLowerCase().endsWith(".jpeg");
-                }
-            }).length;
+            int picSize = 0;
+            if (parentFile.list() != null) {
+                picSize = parentFile.list(new FilenameFilter() {
+                    @Override
+                    public boolean accept(File dir, String filename) {
+                        return filename.toLowerCase().endsWith(".jpg")
+                                || filename.toLowerCase().endsWith(".png")
+                                || filename.toLowerCase().endsWith(".jpeg");
+                    }
+                }).length;
+            }
             totalCount += picSize;
 
             if (PickImageParams.selectedImageFile == null) {
