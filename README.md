@@ -2,7 +2,7 @@
 Including the switch folders,dynamic record user selected pictures and preview images, etc
 
 ## Rendering
-<img src="https://github.com/LeeeYou/LeeeYou.github.io/blob/master/images/githubpages/%E9%AB%98%E4%BB%BF%E5%BE%AE%E4%BF%A1%E9%80%89%E6%8B%A9%E5%9B%BE%E7%89%87.gif"/>
+<img src="https://github.com/Leeeyou/BlogResource/blob/master/source/images/githubpages/%E9%AB%98%E4%BB%BF%E5%BE%AE%E4%BF%A1%E9%80%89%E6%8B%A9%E5%9B%BE%E7%89%87.gif?raw=true"/>
 
 ## Project description
 On the basis of this Demo Zhang Hongyang blog [Android 超高仿微信图片选择器图片该这么加载](http://blog.csdn.net/lmj623565791/article/details/39943731)，Major point of modification is as follows：<br>
